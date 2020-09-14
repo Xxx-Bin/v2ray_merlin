@@ -1,7 +1,7 @@
 #!/bin/sh
 
 is_v2ray_alive() {
-    v2ray_count=`ps -w |grep '/koolshare/bin/v2ray'|grep -v grep|grep -v watchdog|wc -l`
+    v2ray_count=`ps w |grep '/koolshare/bin/v2ray'|grep -v grep|grep -v watchdog|wc -l`
     if [ "$v2ray_count" -gt 0 ];then
         return 0  # work ok
     else

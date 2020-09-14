@@ -1,27 +1,12 @@
 #!/bin/sh
 alias echo_date='echo $(date +%Y年%m月%d日\ %X):'
 
-stop_ss() {
-    rss_local=`ps -w |grep 'rss-local'|grep -v grep|wc -l`
-    rss_redir=`ps -w |grep 'rss-redir'|grep -v grep|wc -l`
-    if [ "$rss_local" -eq 1 ] && [ "$rss_redir" -eq 1 ];then
-        dbus set sstype="rss"
-        killall rss-local >/dev/null 2>&1
-        killall rss-redir >/dev/null 2>&1
-    else
-        dbus set sstype="ss"
-        killall ss-local >/dev/null 2>&1
-        killall ss-redir >/dev/null 2>&1
-    fi  
-}
-
 run_v2ray(){
     #v2ray='/koolshare/bin/v2ray --config=/koolshare/bin/v2ray_config.json'
-    v2ray_count=`ps -w |grep '/koolshare/bin/v2ray'|grep -v grep|grep -v watchdog|wc -l`
+    v2ray_count=`ps w |grep '/koolshare/bin/v2ray'|grep -v grep|grep -v watchdog|wc -l`
     if [ "$v2ray_count" -gt 0 ];then
         echo_date 已经在启动
     else
-        stop_ss
         #$v2ray &
         /koolshare/bin/v2ray --config=/koolshare/bin/v2ray_config.json &
 	    echo $$ > /tmp/v2ray.pid
@@ -45,15 +30,6 @@ stop_v2ray(){
    if [ ! -z "$v2ray" ];then 
         echo_date 关闭v2ray进程...
         killall v2ray
-        echo_date 重新启动rss进程...
-        if [ "$sstype" == "rss" ];then
-            /koolshare/bin/rss-local -l 23456 -c /koolshare/ss/ss.json -u -f /var/run/sslocal1.pid
-            /koolshare/bin/rss-redir -c /koolshare/ss/ss.json -u -f /var/run/shadowsocks.pid
-        else
-            /koolshare/bin/ss-local -l 23456 -c /koolshare/ss/ss.json -u -f /var/run/sslocal1.pid
-            /koolshare/bin/ss-redir -c /koolshare/ss/ss.json -u -f /var/run/shadowsocks.pid
-        fi
-
    fi
    if [ -e "/koolshare/init.d/S165V2ray.sh" ];then
       rm -rf /koolshare/init.d/S165V2ray.sh

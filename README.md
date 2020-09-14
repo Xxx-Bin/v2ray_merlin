@@ -1,3 +1,15 @@
+=====================
+
+机器为 斐讯k3A1 
+固件版本 https://tbvv.net/posts/0101-merlin.html#more
+修改部分：
+    v2ray 替换为 4.22.0 arm版本
+    部分sh ps -w 改为 ps w 
+    移除和ss联动
+    注释更新脚本
+
+
+=====原作者=======
 # 注意
 官方梅林ss插件已经支持v2ray，推荐使用。
 # v2ray_switch
